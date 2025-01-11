@@ -1,0 +1,11 @@
+{
+  "extends": "@repo/typescript-config/react-library.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "moduleResolution": "nodenext",
+    "allowImportingTsExtensions": true,
+    "noEmit": true // or "emitDeclarationOnly": true
+  },
+  "include": ["src"],
+  "exclude": ["node_modules", "dist"]
+}
