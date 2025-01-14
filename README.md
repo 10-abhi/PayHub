@@ -16,8 +16,15 @@ This Turborepo includes the following packages/apps:
 
 ### Apps and Packages
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
+- `apps`: a repo which contain many [Next.js] & [Express.js] apps . 
+
+- `In apps` : 
+- `bank-webhook` : a [Express.js] app
+- `merchant-app` : a [Next.js] app
+- `user-app` : a [Next.js] app
+
+-`In Packages` : 
+-`@repo/db` : contains the schema of the postgres database with using prisma orm.
 - `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
 - `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
 - `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
