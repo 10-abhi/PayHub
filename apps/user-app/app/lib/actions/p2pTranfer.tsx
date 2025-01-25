@@ -22,6 +22,7 @@ export async function p2pTransfer(to: string, amount: number) {
             message: "User not found"
         }
     }
+   try {
     await prisma.$transaction(async (tx) => {
         await tx.$queryRaw`SELECT * FROM "Balance" WHERE "userId" = ${Number(from)} FOR UPDATE`; 
         
@@ -50,4 +51,9 @@ export async function p2pTransfer(to: string, amount: number) {
              }
           })
     });
+  
+   } catch (error) {
+    console.log(error);
+   }
+    
 }

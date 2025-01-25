@@ -69,5 +69,3 @@ export const P2Ptrxn = (props: {
     </div>
   );
 };
-
-export default P2Ptrxn;

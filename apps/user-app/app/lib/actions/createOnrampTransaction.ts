@@ -11,6 +11,7 @@ export async function createOnRampTransaction(provider: string, amount: number) 
             message : "Unauthenticated request"
         }
     }
+    //this token we will get from the bank backend.
     const token = (Math.random()*1000).toString();
     await prisma.onRampTransaction.create({
         data: {
