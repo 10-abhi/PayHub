@@ -9,6 +9,19 @@ import { p2pTransfer } from "../app/lib/actions/p2pTranfer";
 export function SendCard() {
     const [number, setNumber] = useState("");
     const [amount, setAmount] = useState("");
+    const [status , setStatus] = useState("");
+
+    const handleTransfer = async()=>{
+        try {
+            await p2pTransfer(number , Number(amount)*100);
+            setStatus("Transfer successful!!")
+            setNumber("");
+            setAmount("");  
+       
+        } catch (error) {
+           console.log(error);
+        }
+    }
 
     return <div className="h-[90vh]">
         <Center>
@@ -21,10 +34,17 @@ export function SendCard() {
                         setAmount(value)
                     }} />
                     <div className="pt-4 flex justify-center">
-                        <Button onClick={async() => {
-                         await p2pTransfer(number , Number(amount)*100);
-                        }}>Send</Button>
+                        <Button onClick={handleTransfer}>Send</Button>
                     </div>
+                    {
+                    status && (
+                        <div className="pt-4 text-center">
+                            <div>
+                                {status}
+                            </div>
+                        </div>
+                    )    
+                    }
                 </div>
             </Card>
         </Center>
