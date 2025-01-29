@@ -23,7 +23,7 @@ export function SendCard() {
         }
     }
 
-    return <div className="h-[90vh]">
+    return <div className="">
         <Center>
             <Card title="Send">
                 <div className="min-w-72 pt-2">

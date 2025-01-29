@@ -84,10 +84,9 @@ export default async function P2PTransferPage() {
         <h1 className="text-3xl text-[#6a51a6] font-bold mb-4">
           P2P Transfer
         </h1>
-        6
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div>
-            <div className="bg-white rounded-lg shadow p-4 mb-4">
+            <div className="bg-white rounded-lg shadow p-8 mb-4">
               <SendCard />
             </div>
           </div>
@@ -98,7 +97,7 @@ export default async function P2PTransferPage() {
             </div>
             
             <div className="bg-white rounded-lg shadow">
-            <h1 className="text-2xl text-[#6a51a6] font-bold mb-4">
+            <h1 className="text-2xl text-[#331c6b] font-bold mb-4">
               P2P History</h1>
               <P2Ptrxn P2P={transactions} />
             </div>
