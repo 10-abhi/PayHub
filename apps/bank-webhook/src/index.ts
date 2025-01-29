@@ -1,11 +1,27 @@
 import express from "express";
 const app = express();
 import db from "@repo/db/client"
+import {z} from 'zod'
+
+const paymentSchema = z.object({
+    token : z.string(),
+    userId : z.number(),
+    amount : z.number(),
+});
 
 app.use(express.json());
 app.post("/hdfcWebhook" , async (req,res)=>{
-    //Todo : Add zod validation
-    //TODO: HDFC bank should ideally send us a secret so we know this is sent by them
+
+    //Todo : Add zod validation // completed
+
+    const data = req.body;
+    const success = data.parse(paymentSchema);
+    if(!success){
+        res.json({
+            mesaage : "Schema is not valid"
+        })
+    }
+
     const paymentInformation = {
         token : req.body.token,
         userId : req.body.user_identifier,
