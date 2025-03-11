@@ -20,13 +20,11 @@ export const P2Ptrxn = (props: {
     );
   }
 
-  const formatDate = (date: Date) => {
-    return date.toLocaleDateString('en-US', {
-      day: 'numeric',
-      month: 'short',
-      year: 'numeric'
-    });
-  };
+  // const formatDate = (date: Date) => {
+  //   const today = new Date();
+  //   console.log(today.toDateString);
+  //  return today.toDateString();
+  // };
 
   return (
     <div className="w-full max-w-md mx-auto rounded-lg border border-gray-200 shadow-sm">
@@ -57,7 +55,7 @@ export const P2Ptrxn = (props: {
                       + ₹{transaction.amount.toLocaleString()}
                     </div>
                     <div className="text-sm text-gray-500">
-                      {formatDate(transaction.timestamp)}
+                      (transaction.timestamp)
                     </div>
                   </div>
                 </div>
