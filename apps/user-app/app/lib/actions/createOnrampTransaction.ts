@@ -4,7 +4,7 @@ import prisma from "@repo/db/client";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth";
 
-export async function createOnRampTransaction(provider: string, amount: number) {
+export async function createOnRampTransaction(provider: string, amount: number , token:string) {
     const session = await getServerSession(authOptions);
     if(!session?.user || !session.user?.id){
         return {
@@ -12,7 +12,7 @@ export async function createOnRampTransaction(provider: string, amount: number) 
         }
     }
     //this token we will get from the bank backend.
-    const token = (Math.random()*1000).toString();
+    // const token = (Math.random()*1000).toString();
     await prisma.onRampTransaction.create({
         data: {
             provider,

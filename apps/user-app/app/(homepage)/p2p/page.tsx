@@ -1,3 +1,4 @@
+// app/p2p/page.tsx
 import { SendCard } from "../../../components/SendCard";
 import { BalanceCard } from "../../../components/BalanceCard";
 import { P2Ptrxn } from "../../../components/P2PTrxn";
@@ -21,17 +22,16 @@ type P2PTransaction = {
 async function getBalance(): Promise<Balance> {
   try {
     const session = await getServerSession(authOptions);
-    
     if (!session?.user?.id) {
       redirect("/auth/signin");
     }
-
+    
     const balance = await Prisma.balance.findFirst({
       where: {
         userId: Number(session.user.id)
       }
     });
-
+    
     return {
       amount: balance?.amount ?? 0,
       locked: balance?.locked ?? 0
@@ -45,11 +45,10 @@ async function getBalance(): Promise<Balance> {
 async function getP2PTransactions(): Promise<P2PTransaction[]> {
   try {
     const session = await getServerSession(authOptions);
-    
     if (!session?.user?.id) {
       return [];
     }
-
+    
     const transactions = await Prisma.p2pTransfer.findMany({
       where: {
         fromUserId: Number(session.user.id)
@@ -59,7 +58,7 @@ async function getP2PTransactions(): Promise<P2PTransaction[]> {
       },
       take: 5
     });
-
+    
     return transactions.map(t => ({
       amount: t.amount/100,
       toUser: t.toUserId,
@@ -78,27 +77,31 @@ export default async function P2PTransferPage() {
       getBalance(),
       getP2PTransactions()
     ]);
-
+    
+    const session = await getServerSession(authOptions);
+    
     return (
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-        <h1 className="text-3xl text-[#6a51a6] font-bold mb-4">
+      <div className="container mx-auto px-4 py-8 mt-16">
+        <h1 className="text-3xl text-[#6a51a6] font-bold mb-6">
           P2P Transfer
         </h1>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div>
-            <div className="bg-white rounded-lg shadow p-8 mb-4">
+            <div className="bg-white rounded-lg shadow-md p-6 transition-all hover:shadow-lg">
               <SendCard />
             </div>
           </div>
           
-          <div className="space-y-4">
-            <div className="bg-white rounded-lg shadow">
+          <div className="space-y-6">
+            <div className="bg-white rounded-lg shadow-md p-6 transition-all hover:shadow-lg">
               <BalanceCard amount={balance.amount} locked={balance.locked} />
             </div>
             
-            <div className="bg-white rounded-lg shadow">
-            <h1 className="text-2xl text-[#331c6b] font-bold mb-4">
-              P2P History</h1>
+            <div className="bg-white rounded-lg shadow-md p-6 transition-all hover:shadow-lg">
+              <h2 className="text-xl text-[#331c6b] font-semibold mb-4">
+                P2P History
+              </h2>
               <P2Ptrxn P2P={transactions} />
             </div>
           </div>
@@ -108,14 +111,17 @@ export default async function P2PTransferPage() {
   } catch (error) {
     console.error("Error rendering P2P transfer page:", error);
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <h2 className="text-2xl font-semibold text-gray-900">
+      <div className="container mx-auto px-4 py-8 mt-16 min-h-[70vh] flex items-center justify-center">
+        <div className="bg-white p-8 rounded-lg shadow-md text-center max-w-md w-full">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-12 h-12 mx-auto text-red-500 mb-4">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+          </svg>
+          <h2 className="text-2xl font-semibold text-gray-900 mb-2">
             Something went wrong
           </h2>
-          <p className="mt-2 text-gray-600">
+          <div className="text-gray-600">
             Please try refreshing the page or contact support if the issue persists.
-          </p>
+          </div>
         </div>
       </div>
     );

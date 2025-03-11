@@ -1,5 +1,5 @@
 export default function() {
     return <div>
-        Transaction Page
+        <div className="mt-10"></div>
     </div>
 }
