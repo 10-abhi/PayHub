@@ -19,12 +19,13 @@ type P2PTransaction = {
   timestamp: Date;
 };
 
-async function getBalance(): Promise<Balance> {
+export async function getBalance(): Promise<Balance> {
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user?.id) {
       redirect("/auth/signin");
     }
+    console.log(session.user.email)
     
     const balance = await Prisma.balance.findFirst({
       where: {
