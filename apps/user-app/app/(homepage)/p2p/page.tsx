@@ -25,7 +25,7 @@ export async function getBalance(): Promise<Balance> {
     if (!session?.user?.id) {
       redirect("/auth/signin");
     }
-    console.log(session.user.email)
+    // console.log(session.user.email)
     
     const balance = await Prisma.balance.findFirst({
       where: {
@@ -78,8 +78,6 @@ export default async function P2PTransferPage() {
       getBalance(),
       getP2PTransactions()
     ]);
-    
-    const session = await getServerSession(authOptions);
     
     return (
       <div className="container mx-auto px-4 py-8 mt-16">

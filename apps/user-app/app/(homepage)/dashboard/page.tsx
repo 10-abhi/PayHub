@@ -5,7 +5,7 @@ import { getBalance } from '../p2p/page';
 import Link from 'next/link';
 
 async function BalanceComponent() {
-  let amount = await getBalance();
+  const amount = await getBalance();
   const modifiedAmount = Number(amount)/100;
   return <div className="flex items-baseline">
     <span className="text-3xl font-bold">${modifiedAmount}</span>
@@ -30,11 +30,6 @@ export default function Dashboard() {
     { icon: <FiArrowDownLeft size={20} />, title: "Request", color: "bg-green-100 text-green-600" },
     { icon: <FiUsers size={20} />, title: "Split Bill", color: "bg-purple-100 text-purple-600" },
     { icon: <FiCreditCard size={20} />, title: "Cards", color: "bg-orange-100 text-orange-600" },
-  ];
-
-  const upcomingPayments = [
-    { name: "Spotify Premium", amount: 9.99, date: "Mar 15, 2025" },
-    { name: "Rent", amount: 1200.00, date: "Mar 31, 2025" },
   ];
 
   return (
