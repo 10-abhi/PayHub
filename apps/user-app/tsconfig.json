@@ -10,6 +10,8 @@
     "allowImportingTsExtensions": true,
   },
   "include": [
+    "types",
+    "src",
     "**/*.ts",
     "**/*.tsx",
     "next-env.d.ts",
