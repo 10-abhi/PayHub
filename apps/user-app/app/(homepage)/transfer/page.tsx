@@ -60,10 +60,10 @@ async function getOnRampTransactions(): Promise<Transaction[]> {
       take: 10
     });
     
-    return txns.map(t => ({
+    return txns.map( t  => ({
       time: t.startTime,
       amount: t.amount,
-      status: t.status,
+      status: t.status.toString(),
       provider: t.provider
     }));
   } catch (error) {
