@@ -5,6 +5,8 @@ import { BalanceCard } from "../../../components/BalanceCard";
 import { OnRampTransactions } from "../../../components/OnRampTransaction";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../lib/auth";
+type OnRampTransactionDB = NonNullable<Awaited<ReturnType<typeof prisma.onRampTransaction.findFirst>>>;
+
 
 type Balance = {
   amount: number;
@@ -60,7 +62,7 @@ async function getOnRampTransactions(): Promise<Transaction[]> {
       take: 10
     });
     
-    return txns.map( t  => ({
+    return txns.map( (t: OnRampTransactionDB)  => ({
       time: t.startTime,
       amount: t.amount,
       status: t.status.toString(),
