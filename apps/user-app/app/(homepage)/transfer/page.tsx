@@ -1,4 +1,5 @@
-// app/transfer/page.tsx
+export const dynamic = "force-dynamic";
+
 import prisma from "@repo/db/client";
 import { AddMoney } from "../../../components/AddMoneyCard";
 import { BalanceCard } from "../../../components/BalanceCard";

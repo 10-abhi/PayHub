@@ -1,7 +1,9 @@
+export const dynamic = "force-dynamic";
+
 import React from 'react';
 import { Card } from "@repo/ui/card";
 import { FiDollarSign, FiArrowUpRight, FiArrowDownLeft, FiUsers, FiCreditCard, FiBell, FiBarChart2 } from 'react-icons/fi';
-import { getBalance } from '../p2p/page';
+import { getBalance } from '../../lib/actions/getBalance';
 import Link from 'next/link';
 
 async function BalanceComponent() {

@@ -1,11 +1,12 @@
-// app/p2p/page.tsx
+export const dynamic = "force-dynamic";
+
 import { SendCard } from "../../../components/SendCard";
 import { BalanceCard } from "../../../components/BalanceCard";
 import { P2Ptrxn } from "../../../components/P2PTrxn";
-import Prisma from "@repo/db/client";
+import prisma from "@repo/db/client";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../lib/auth";
-import { redirect } from "next/navigation";
+import { getBalance } from "../../lib/actions/getBalance";
 
 type Balance = {
   amount: number;
@@ -19,29 +20,29 @@ type P2PTransaction = {
   timestamp: Date;
 };
 
-export async function getBalance(): Promise<Balance> {
-  try {
-    const session = await getServerSession(authOptions);
-    if (!session?.user?.id) {
-      redirect("/auth/signin");
-    }
-    // console.log(session.user.email)
+// export async function getBalance(): Promise<Balance> {
+//   try {
+//     const session = await getServerSession(authOptions);
+//     if (!session?.user?.id) {
+//       redirect("/auth/signin");
+//     }
+//     // console.log(session.user.email)
     
-    const balance = await Prisma.balance.findFirst({
-      where: {
-        userId: Number(session.user.id)
-      }
-    });
+//     const balance = await prisma.balance.findFirst({
+//       where: {
+//         userId: Number(session.user.id)
+//       }
+//     });
     
-    return {
-      amount: balance?.amount ?? 0,
-      locked: balance?.locked ?? 0
-    };
-  } catch (error) {
-    console.error("Error fetching balance:", error);
-    return { amount: 0, locked: 0 };
-  }
-}
+//     return {
+//       amount: balance?.amount ?? 0,
+//       locked: balance?.locked ?? 0
+//     };
+//   } catch (error) {
+//     console.error("Error fetching balance:", error);
+//     return { amount: 0, locked: 0 };
+//   }
+// }
 
 async function getP2PTransactions(): Promise<P2PTransaction[]> {
   try {
@@ -50,7 +51,7 @@ async function getP2PTransactions(): Promise<P2PTransaction[]> {
       return [];
     }
     
-    const transactions = await Prisma.p2pTransfer.findMany({
+    const transactions = await prisma.p2pTransfer.findMany({
       where: {
         fromUserId: Number(session.user.id)
       },
@@ -94,7 +95,7 @@ export default async function P2PTransferPage() {
           
           <div className="space-y-6">
             <div className="bg-white rounded-lg shadow-md p-6 transition-all hover:shadow-lg">
-              <BalanceCard amount={balance.amount} locked={balance.locked} />
+              <BalanceCard amount={balance.amount ?? 0} locked={balance.locked ?? 0} />
             </div>
             
             <div className="bg-white rounded-lg shadow-md p-6 transition-all hover:shadow-lg">
