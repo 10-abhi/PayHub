@@ -60,7 +60,7 @@ async function getP2PTransactions(): Promise<P2PTransaction[]> {
       take: 5
     });
     
-    return transactions.map(t => ({
+    return transactions.map((t: { amount: number; toUserId: number ; fromUserId: number ; timestamp : Date } )=> ({
       amount: t.amount/100,
       toUser: t.toUserId,
       fromUser: t.fromUserId,
