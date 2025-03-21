@@ -2,6 +2,7 @@ import express from "express";
 const app = express();
 import db from "@repo/db/client"
 import {z} from 'zod'
+import 'dotenv/config'
 
 const paymentSchema = z.object({
     token : z.string(),
