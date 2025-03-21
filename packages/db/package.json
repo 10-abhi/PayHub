@@ -16,7 +16,8 @@
     "./client": "./index.ts"
   },
   "dependencies": {
-    "@prisma/client": "^6.1.0"
+    "@prisma/client": "^6.1.0",
+    "@repo/typescript-config": "*"
   },
   "devDependencies": {
     "jest": "^29.7.0",
