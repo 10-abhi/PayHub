@@ -58,11 +58,20 @@ export const authOptions = {
                         }
                     });
                     console.log("User added to the db");
+                    const balance = await db.balance.create({
+                        data: {
+                            amount: 100,
+                            locked: 100,
+                            userId: user.id
+                        }
+                    })
+                    console.log("Dummy Balance added to the db" , balance.amount);
                     return {
                         id: user.id.toString(),
                         name: user.name,
                         email: user.number
                     }
+            
                 } catch (e) {
                     console.error(e);
                 }
