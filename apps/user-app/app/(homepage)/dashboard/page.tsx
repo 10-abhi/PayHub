@@ -8,7 +8,7 @@ import Link from 'next/link';
 
 async function BalanceComponent() {
   const amount = await getBalance();
-  const modifiedAmount = Number(amount)/100;
+  const modifiedAmount = Number(amount.amount)/100;
   return <div className="flex items-baseline">
     <span className="text-3xl font-bold">${modifiedAmount}</span>
     <span className="ml-2 text-sm opacity-80">USD</span>
