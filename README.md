@@ -1,91 +1,107 @@
-# Turborepo starter
+# Paytm-Style Wallet Monorepo
 
-This is an official starter Turborepo.
+Production oriented fintech monorepo built with Turborepo, Next.js, Express, Prisma, and PostgreSQL.
 
-## Using this example
+This project includes:
+- User wallet app with add money, transfer, P2P, and merchant payment flows.
+- Merchant dashboard app with Google OAuth (NextAuth).
+- Dedicated webhook service for bank + Stripe events.
+- Shared database, UI, lint, and TypeScript packages.
 
-Run the following command:
+## Highlights
 
-```sh
-npx create-turbo@latest
+- Stripe Checkout integration for wallet topups.
+- Verified Stripe webhook handling with signature validation.
+- Merchant payment tracking with `MerchantTransaction` model.
+- Shared Prisma schema and generated client via `@repo/db`.
+- Turborepo task orchestration for local development and builds.
+
+## Monorepo Structure
+
+```text
+apps/
+	user-app/         # Next.js user wallet app (port 3000)
+	merchant-app/     # Next.js merchant app (port 3001)
+	bank-webhook/     # Express webhook receiver (set PORT, recommended 4000)
+
+packages/
+	db/               # Prisma schema + client exports
+	ui/               # Shared React UI components
+	store/            # Shared state hooks/atoms
+	eslint-config/    # Shared ESLint presets
+	typescript-config/# Shared tsconfig presets
 ```
 
-## What's inside?
+## Tech Stack
 
-This Turborepo includes the following packages/apps:
+- Turborepo
+- Next.js (App Router)
+- Express.js
+- Prisma + PostgreSQL
+- NextAuth
+- Stripe
+- TypeScript
 
-### Apps and Packages
 
-- `apps`: a repo which contain many [Next.js] & [Express.js] apps . 
 
-- `In apps` : 
-- `bank-webhook` : a [Express.js] app
-- `merchant-app` : a [Next.js] app
-- `user-app` : a [Next.js] app
+## Environment Variables
 
--`In Packages` : 
--`@repo/db` : contains the schema of the postgres database with using prisma orm.
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
+Create a root `.env` file (or per app env files) with the following values:
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+```bash
+# Core
+DATABASE_URL=""
+JWT_SECRET=""
 
-### Utilities
+# Merchant auth (Google)
+GOOGLE_CLIENT_ID="..."
+GOOGLE_CLIENT_SECRET="..."
+NEXTAUTH_URL="http://localhost:3001"
+NEXTAUTH_SECRET=""
 
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
-
-```
-cd my-turborepo
-pnpm build
+# Stripe
+STRIPE_SECRET_KEY=""
+STRIPE_WEBHOOK_SECRET=""
 ```
 
-### Develop
+## Run Locally
 
-To develop all apps and packages, run the following command:
+Start all apps/packages with Turborepo:
 
-```
-cd my-turborepo
-pnpm dev
-```
-
-### Remote Caching
-
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
-
-Turborepo can use a technique known as [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
-
-```
-cd my-turborepo
-npx turbo login
+```bash
+npm run dev
 ```
 
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
+Default local endpoints:
+- User App: `http://localhost:3000`
+- Merchant App: `http://localhost:3001`
+- Bank/Webhook Service: `http://localhost:${PORT:-4000}`
 
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
+## Stripe Payment Flow
 
+1. User selects `Stripe (Credit/Debit)` in Add Money.
+2. `createStripeSession` creates a Stripe Checkout Session and records an `OnRampTransaction` in `Processing` state.
+3. Stripe sends `checkout.session.completed` event to `/stripeWebhook`.
+4. Webhook verifies signature, increments user balance, and marks transaction `Success`.
+
+
+
+## Scripts
+
+Root scripts:
+
+```bash
+npm run dev      # turbo dev
+npm run build    # turbo build
+npm run lint     # turbo lint
+npm run format   # prettier write
 ```
-npx turbo link
+
+Targeted workspace examples:
+
+```bash
+npm run dev --workspace=merchant-app
+npm run dev --workspace=docs            # user-app workspace name in package.json
+npm run dev --workspace=bank-webhook
 ```
 
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turbo.build/repo/docs/core-concepts/monorepos/running-tasks)
-- [Caching](https://turbo.build/repo/docs/core-concepts/caching)
-- [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching)
-- [Filtering](https://turbo.build/repo/docs/core-concepts/monorepos/filtering)
-- [Configuration Options](https://turbo.build/repo/docs/reference/configuration)
-- [CLI Usage](https://turbo.build/repo/docs/reference/command-line-reference)
