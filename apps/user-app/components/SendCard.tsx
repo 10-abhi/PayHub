@@ -9,21 +9,20 @@ import { p2pTransfer } from "../app/lib/actions/p2pTranfer";
 export function SendCard() {
     const [number, setNumber] = useState("");
     const [amount, setAmount] = useState("");
-    const [status , setStatus] = useState("");
+    const [status, setStatus] = useState("");
 
-    const handleTransfer = async()=>{
+    const handleTransfer = async () => {
         try {
-            await p2pTransfer(number , Number(amount)*100);
+            await p2pTransfer(number, Number(amount) * 100);
             setStatus("Transfer successful!!")
             setNumber("");
-            setAmount("");  
-       
+            setAmount("");
         } catch (error) {
-           console.log(error);
+            console.log(error);
         }
     }
 
-    return <div className="">
+    return <div>
         <Center>
             <Card title="Send">
                 <div className="min-w-72 pt-2">
@@ -36,15 +35,13 @@ export function SendCard() {
                     <div className="pt-4 flex justify-center">
                         <Button onClick={handleTransfer}>Send</Button>
                     </div>
-                    {
-                    status && (
+                    {status && (
                         <div className="pt-4 text-center">
-                            <div>
+                            <div className={`text-sm font-medium px-4 py-2 rounded-xl ${status.includes("success") ? "text-emerald-400 bg-emerald-500/10 border border-emerald-500/20" : "text-red-400 bg-red-500/10 border border-red-500/20"}`}>
                                 {status}
                             </div>
                         </div>
-                    )    
-                    }
+                    )}
                 </div>
             </Card>
         </Center>
