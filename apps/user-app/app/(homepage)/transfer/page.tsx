@@ -83,29 +83,19 @@ export default async function TransferPage() {
     ]);
     
     return (
-      <div className="container mx-auto px-4 py-8 mt-16">
-        <h1 className="text-3xl text-[#6a51a6] font-bold mb-6">
+      <div className="container mx-auto px-4 py-8 max-w-4xl">
+        <h1 className="text-3xl font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-blue-400">
           Transfer
         </h1>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <div className="bg-white rounded-lg shadow-md p-6 transition-all hover:shadow-lg h-full">
-              <AddMoney />
-            </div>
+            <AddMoney />
           </div>
           
           <div className="space-y-6">
-            <div className="bg-white rounded-lg shadow-md p-6 transition-all hover:shadow-lg">
-              <BalanceCard amount={balance.amount} locked={balance.locked} />
-            </div>
-            
-            <div className="bg-white rounded-lg shadow-md p-6 transition-all hover:shadow-lg">
-              <h2 className="text-xl text-[#331c6b] font-semibold mb-4">
-                Transaction History
-              </h2>
-              <OnRampTransactions transactions={transactions} />
-            </div>
+            <BalanceCard amount={balance.amount} locked={balance.locked} />
+            <OnRampTransactions transactions={transactions} />
           </div>
         </div>
       </div>
@@ -113,15 +103,13 @@ export default async function TransferPage() {
   } catch (error) {
     console.error("Error rendering transfer page:", error);
     return (
-      <div className="container mx-auto px-4 py-8 mt-16 min-h-[70vh] flex items-center justify-center">
-        <div className="bg-white p-8 rounded-lg shadow-md text-center max-w-md w-full">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-12 h-12 mx-auto text-red-500 mb-4">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
-          </svg>
-          <h2 className="text-2xl font-semibold text-gray-900 mb-2">
+      <div className="container mx-auto px-4 py-8 min-h-[70vh] flex items-center justify-center">
+        <div className="bg-slate-900/80 backdrop-blur-sm p-8 rounded-2xl border border-slate-800 shadow-xl text-center max-w-md w-full">
+          <div className="text-4xl mb-4">⚠️</div>
+          <h2 className="text-xl font-semibold text-slate-200 mb-2">
             Something went wrong
           </h2>
-          <div className="text-gray-600">
+          <div className="text-slate-400 text-sm">
             Please try refreshing the page or contact support if the issue persists.
           </div>
         </div>
