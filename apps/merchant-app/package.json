@@ -1,0 +1,31 @@
+{
+  "name": "merchant-app",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -p 3001",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@repo/db": "*",
+    "@repo/ui": "*",
+    "@repo/store": "*",
+    "next-auth": "4.24.5",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "next": "14.2.15"
+  },
+  "devDependencies": {
+    "typescript": "^5",
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "postcss": "^8",
+    "tailwindcss": "^3.4.1",
+    "eslint": "^8",
+    "eslint-config-next": "14.2.15",
+    "@eslint/eslintrc": "^3"
+  }
+}
