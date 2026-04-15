@@ -2,7 +2,7 @@ import db from "@repo/db/client";
 import CredentialsProvider from "next-auth/providers/credentials"
 import bcrypt from "bcrypt";
 import z from "zod"
-import { Session  } from "next-auth";
+import { Session, User  } from "next-auth";
 import { JWT } from "next-auth/jwt";
 
 const credentialsSchema = z.object({
@@ -12,6 +12,10 @@ const credentialsSchema = z.object({
 type sessionType = {
     token : JWT,
     session : Session
+}
+type jwtTypes = {
+    token : JWT,
+    user : User
 }
 
 export const authOptions = {
@@ -30,7 +34,8 @@ export const authOptions = {
                 if (!parsedCredentials.success) { throw new Error('Failed to Parse the Credentials') }
                 const { phone, password } = parsedCredentials.data;
                 const hashedPassword = await bcrypt.hash(password, 10);
-                const existingUser = await db.user.findFirst({
+                try {
+                 const existingUser = await db.user.findFirst({
                     where: {
                         number: phone
                     }
@@ -47,7 +52,11 @@ export const authOptions = {
                         }
                     }
                     return null;
+                }   
+                } catch (error) {
+                    console.error(error);   
                 }
+                
 
                 try {
                     const user = await db.user.create({
@@ -60,7 +69,7 @@ export const authOptions = {
                     console.log("User added to the db");
                     const balance = await db.balance.create({
                         data: {
-                            amount: 100,
+                            amount: 10000,
                             locked: 100,
                             userId: user.id
                         }
@@ -80,15 +89,23 @@ export const authOptions = {
             },
         })
     ],
+    
     secret: process.env.JWT_SECRET || "secret",
     callbacks: {
+    //     async jwt({ token , user } : jwtTypes) {
+    //     // When user signs in, add their ID to the token
+    //     if (user) {
+    //         token.sub = user.id;
+    //     }
+    //     return token;
+    // },
         // TODO: can u fix the type here? Using any is bad //done
-        async session({ token, session }:sessionType) {
-            // if(!session.user && !token){throw error}
+        async session({ token, session }:sessionType) {           
             if(session.user && token ){
              session.user.id = token.sub}
             
             return session
         }
     }
+    
 }
